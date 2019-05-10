@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/image_resource">
+        <file>imgs/bishop_b.png</file>
+        <file>imgs/bishop_w.png</file>
+        <file>imgs/king_b.png</file>
+        <file>imgs/king_w.png</file>
+        <file>imgs/knight_b.png</file>
+        <file>imgs/knight_w.png</file>
+        <file>imgs/pawn_b.png</file>
+        <file>imgs/pawn_w.png</file>
+        <file>imgs/queen_b.png</file>
+        <file>imgs/queen_w.png</file>
+        <file>imgs/rook_b.png</file>
+        <file>imgs/rook_w.png</file>
+        <file>imgs/doooog.jpg</file>
+        <file>imgs/catdiscuss.png</file>
+        <file>imgs/catleave.png</file>
+        <file>imgs/doooog2.jpg</file>
+        <file>imgs/catcross.png</file>
+        <file>imgs/aaaaa.png</file>
+        <file>imgs/uwaaaaa.png</file>
+        <file>imgs/doooog2.png</file>
+    </qresource>
+</RCC>
