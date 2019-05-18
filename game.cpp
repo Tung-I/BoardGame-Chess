@@ -8,11 +8,11 @@
 Game::Game(QWidget *parent ):QGraphicsView(parent)
 {
 
-    //Making the Scene
+    //create the Scene
     gameScene = new QGraphicsScene();
     gameScene->setSceneRect(0,0,1400,900);
 
-    //Making the view
+    //create the view
     setFixedSize(1400,900);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -23,7 +23,7 @@ Game::Game(QWidget *parent ):QGraphicsView(parent)
     setBackgroundBrush(brush);
     pieceToMove = nullptr;
 
-    //game terminal
+    //create game terminal
     gameTerminal = new QGraphicsRectItem();
     gameTerminal->setRect(0, 0, 450, 400);
     gameTerminal->setPos(875, 25);
@@ -40,7 +40,7 @@ Game::Game(QWidget *parent ):QGraphicsView(parent)
     gameTerminal2->setBrush(brush);
     gameTerminal2->setZValue(1);
 
-    //create turn text
+    //create "turn" text
     turnDisplay = new QGraphicsTextItem();
     turnDisplay->setDefaultTextColor(QColor(41, 255, 41, 255));
     turnDisplay->setFont(QFont("",18));
@@ -49,7 +49,7 @@ Game::Game(QWidget *parent ):QGraphicsView(parent)
                         turnDisplay->boundingRect().width()/2, 35);
     turnDisplay->setZValue(3);
 
-    //create check text
+    //create "check" text
     check = new QGraphicsTextItem();
     check->setZValue(3);
     check->setDefaultTextColor(Qt::red);
@@ -59,7 +59,7 @@ Game::Game(QWidget *parent ):QGraphicsView(parent)
                   check->boundingRect().width()/2,70);
     check->setVisible(false);
 
-    //create record text
+    //create record info text
     QGraphicsTextItem *temp;
     for(int i=0;i<8;++i){
         temp = new QGraphicsTextItem();
@@ -115,12 +115,14 @@ Game::Game(QWidget *parent ):QGraphicsView(parent)
     overQuitButton->setPos(700-overQuitButton->rect().width()/2, 475);
     overQuitButton->setZValue(12);
     connect(overQuitButton, SIGNAL(clicked()) , this, SLOT(close()));
+
     //show
     addToScene(overWindow);
     addToScene(overWindow2);
     addToScene(overText);
     addToScene(againButton);
     addToScene(overQuitButton);
+
     //hide
     overWindow->setVisible(false);
     overWindow2->setVisible(false);
@@ -128,7 +130,7 @@ Game::Game(QWidget *parent ):QGraphicsView(parent)
     againButton->setVisible(false);
     overQuitButton->setVisible(false);
 
-    //initial info
+    //initialize data
     setTurn("WHITE");
     addPlace = nullptr;
     addColor = "NONE";
@@ -183,6 +185,7 @@ void Game::displayMainMenu()
     background->setBrush(brush);
     addToScene(background);
     listG.append(background);
+
     //Create the title
     QGraphicsTextItem *titleText = new QGraphicsTextItem("AlphaChess");
     QGraphicsTextItem *verText = new QGraphicsTextItem("ver 8.7");
@@ -205,6 +208,7 @@ void Game::displayMainMenu()
     addToScene(verText);
     listG.append(titleText);
     listG.append(verText);
+
     //create figure
     QGraphicsPixmapItem *p1 = new QGraphicsPixmapItem();
     p1->setPixmap(QPixmap(":/image_resource/imgs/doooog.jpg"));
@@ -262,6 +266,7 @@ void Game::displayMainMenu()
     p8->setZValue(3);
     addToScene(p8);
     listG.append(p8);
+
     //create Button
     Button * playButton = new Button("Player  vs  Player");
     int pxPos = int(width()/2 - playButton->boundingRect().width()/2);
@@ -279,6 +284,7 @@ void Game::displayMainMenu()
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     addToScene(quitButton);
     listG.append(quitButton);
+
     //draw board
     drawChessBoard();
 }
@@ -286,6 +292,7 @@ void Game::displayMainMenu()
 
 void Game::start()
 {
+    //clean the menu objects
     int n = listG.size();
     for(int i =0; i < n; i++){
         removeFromScene(listG[i]);
@@ -296,7 +303,7 @@ void Game::start()
     addToScene(check);
     chess->addChessPiece();
 
-    //create game button
+    //create game buttons
     QBrush brush;
     Button * quit_button = new Button("Quit");
     quit_button->setPos(875,775);
@@ -376,6 +383,7 @@ void Game::clearBoard(){
         eatedChess.removeLast();
         eatedChessSide.removeLast();
     }
+    //reset ptr of record list
     listPtr = -1;
     recordShow();
 }
@@ -393,6 +401,7 @@ void Game::resetBoard(){
         eatedChess.removeLast();
         eatedChessSide.removeLast();
     }
+    //reset ptr of record list
     listPtr = -1;
     recordShow();
 }
@@ -678,7 +687,7 @@ void Game::retract(){
 
         listPtr--;
         recordShow();
-        //set chess
+        //set the chess by the last move
         newBox->setChessPieceColor("NONE");
         newBox->setHasChessPiece(false);
         newBox->currentPiece->~ChessPiece();
@@ -697,10 +706,10 @@ void Game::retract(){
         else if(eatedPiece=="Bishop")chess->addBishop(newBox, eatedSide);
         else if(eatedPiece=="Pawn")chess->addPawn(newBox, eatedSide);
         if(newBox->getHasChessPiece()==true)newBox->currentPiece->firstMove = fmove2;
-        //retract casteling
+        //check whether last move is casteling
         if(movePiece=="King"){
             ChessBox *rook_place;
-            //rook right by king
+            //if the king move 2 boxes, and rook is right by king
             if((oldBox->colLoc - newBox->colLoc)==2){
                 rook_place = collection[oldBox->rowLoc][newBox->colLoc+1];
                 rook_place->setChessPieceColor("NONE");
@@ -711,7 +720,7 @@ void Game::retract(){
                 oldBox->currentPiece->firstMove = true;
                 rook_place->currentPiece->firstMove = true;
             }
-            //rook left by king
+            //if rook is left by king
             else if((oldBox->colLoc - newBox->colLoc)==-2){
                 rook_place = collection[oldBox->rowLoc][newBox->colLoc-1];
                 rook_place->setChessPieceColor("NONE");

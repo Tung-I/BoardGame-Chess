@@ -50,6 +50,7 @@ void Pawn::moves()
         if(row<7 && (!game->collection[row+1][col]->getHasChessPiece())) {
             location.append(game->collection[row+1][col]);
             boxSetting(location.last());
+            //if first move, can move 2 boxes
             if(firstMove && !game->collection[row+2][col]->getHasChessPiece()){
                 location.append(game->collection[row+2][col]);
                 boxSetting(location.last());

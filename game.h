@@ -27,18 +27,18 @@ public:
     void addToScene(QGraphicsItem *item);
     void removeFromScene(QGraphicsItem *item);
 
-    //current pick
+    //the chess picked up now
     ChessPiece *pieceToMove;
 
-    //turn
+    //turn related
     QString getTurn() ;
     void setTurn( QString value);
     void changeTurn();
 
-    //show promotion button
+    //show promotion buttons
     void promotionSelect();
 
-    //chess adding info
+    //chess adding info related
     void setAddPlace(ChessBox *_box);
     ChessBox *getAddPlace();
     void setAddColor(QString _color);
@@ -46,11 +46,11 @@ public:
     bool getAddMode();
     void setAddMode(bool value);
 
-    //info
+    //game public info
     ChessBox *collection[8][8];
     QGraphicsTextItem *check;
 
-    //record
+    //recording related
     void recordUpdate(ChessBox *oldBox, ChessBox *newBox, QString _name, \
                       QString _color, QString _name2, QString _color2, bool fmove1, bool fmove2);
     void recordShow();
@@ -63,7 +63,7 @@ public slots:
     void again();
     void retract();
 
-
+    //into add-chess mode
     void addModeWhiteSlot();
     void addModeBlackSlot();
 
@@ -82,18 +82,21 @@ private:
     QGraphicsRectItem * gameTerminal2;
     QString turn;
     ChessBoard *chess;
+
+    //save the object should be deleted when game starting
     QList <QGraphicsItem *> listG;
+
     QGraphicsTextItem * turnDisplay;
 
-    //chess adding info
+    //chess-add info
     ChessBox *addPlace;
     QString addColor;
 
-    //mode
+    //mode flag
     bool addMode;
     bool promotion_flag;
 
-    //gameover window
+    //gameover window related
     QGraphicsRectItem *overWindow;
     QGraphicsRectItem *overWindow2;
     QGraphicsTextItem *overText;
@@ -112,12 +115,6 @@ private:
     int listPtr;
     int moveCnt;
     QList <QGraphicsTextItem *> line;
-
-
-
-
-
-
 
 };
 

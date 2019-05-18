@@ -7,7 +7,7 @@
 extern Game *game;
 
 ChessBox::ChessBox(QGraphicsItem *parent):QGraphicsRectItem(parent){
-    //making the Square Chess Box
+    //create the Square Chess Boxes
     setRect(0,0,100,100);
     brush.setStyle(Qt::SolidPattern);
     setZValue(-1);
@@ -39,12 +39,12 @@ QString ChessBox::getChessPieceColor(){return chessPieceColor;}
 void ChessBox::setChessPieceColor(QString value){chessPieceColor = value;}
 
 void ChessBox::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{   //eated info
+{   //info of the chesspiece which is eated
     QString eatedName = "NONE";
     QString eatedColor = "NONE";
     bool fmove1 = false;
     bool fmove2 = false;
-    //add mode
+    //if in add mode
     if(game->getAddMode()==true){
         if(getHasChessPiece()==true)return;
         if(game->getAddPlace()==this){
@@ -63,9 +63,9 @@ void ChessBox::mousePressEvent(QGraphicsSceneMouseEvent *event)
         currentPiece->mousePressEvent(event);
         return;
     }
-    //if selected
+    //if pieceToMove has been selected
     if(game->pieceToMove){
-        //make sure this box is in move zone
+        //make sure this box is in the move zone
         QList <ChessBox *> movLoc = game->pieceToMove->moveLocation();
         int check = 0;
         int n = movLoc.size();
@@ -80,29 +80,30 @@ void ChessBox::mousePressEvent(QGraphicsSceneMouseEvent *event)
             //if same side
             if(this->currentPiece->getSide() == game->pieceToMove->getSide())
                 return;
-            //eat it
+            //if different side, eat it
             else{
                 //record
                 eatedName = currentPiece->getName();
                 eatedColor = currentPiece->getSide();
                 fmove2 = this->currentPiece->firstMove;
-                //if gameover
+                //if the king is eated
                 if(currentPiece->getName()=="King"){
                     game->gameover(game->pieceToMove->getSide());
                 }
+                //delete the chess
                 this->setChessPieceColor("NONE");
                 this->setHasChessPiece(false);
                 this->currentPiece->~ChessPiece();
             }
         }
         //no chess in this box now
-            //save
+        //save record info 
         fmove1 = game->pieceToMove->firstMove;
         game->recordUpdate(game->pieceToMove->getCurrentBox(), this, \
                            game->pieceToMove->getName(), game->pieceToMove->getSide(),\
                            eatedName, eatedColor, fmove1, fmove2);
         game->recordShow();
-        //leave the old place and set the new place
+        //leave the old place and locate in the new place
         game->pieceToMove->getCurrentBox()->resetOriginalColor();
         game->pieceToMove->getCurrentBox()->setHasChessPiece(false);
         game->pieceToMove->getCurrentBox()->currentPiece = nullptr;
@@ -110,9 +111,9 @@ void ChessBox::mousePressEvent(QGraphicsSceneMouseEvent *event)
         game->pieceToMove->firstMove = false;
         this->placePiece(game->pieceToMove);
         game->pieceToMove = nullptr;
-        //check the check
+        //check check
         currentPiece->checkCheck();
-        //if castling
+        //if this box is castling box
         if(castling_flag==true && currentPiece->getName()==QString("King")){
             //move rook
             if(colLoc==2){
@@ -151,7 +152,7 @@ void ChessBox::mousePressEvent(QGraphicsSceneMouseEvent *event)
         //changing turn
         game->changeTurn();
     }
-    //if have not selected
+    //if pieceToMove has not selected
     else{
         //if this box has chesspiece && turn is correct
         if(getHasChessPiece()==true && chessPieceColor==game->getTurn()){

@@ -71,7 +71,7 @@ bool King::castlingAttackCheck(ChessBox *kingPos){
                 //if different color
                 if(game->collection[i][j]->currentPiece->getSide()!=\
                         game->pieceToMove->getSide()){
-                    //try move
+                    //update attack location and check
                     game->collection[i][j]->currentPiece->getAttack();
                     QList <ChessBox *> movLoc = game->collection[i][j]->currentPiece->moveLocation();
                     int n = movLoc.size();
